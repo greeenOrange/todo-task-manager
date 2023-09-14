@@ -20,7 +20,7 @@ const TaskPriority = ({ tasks, setTasks }) => {
             <ul>
                 <ul>
                     {stateUses?.map((status, index) => (
-                        <Section key={index} status={status}/>
+                        <Section key={index} status={status} tasks={tasks} setTasks={setTasks} todos={todos} inProgres={inProgress} done={done} />
                     ))}
                 </ul>
             </ul>
@@ -30,8 +30,20 @@ const TaskPriority = ({ tasks, setTasks }) => {
 
 export default TaskPriority;
 
-const Section = ({ status }) => {
+const Section = ({ status, setTasks, tasks, todos, inProgres, done }) => {
+    let text = "Todo";
+    let bg = "bg-slate-500"
     return <>
-        <li><h2>{status}</h2> List</li>
+        <div >
+    <Header text={text} bg={bg} count={todos?.length}/>
+        </div>
     </>
+}
+
+const Header = ({ text, bg, count }) => {
+    return (
+        <div className={`${bg} flex`}>
+            <li><h2>{text}</h2>List</li>
+        </div>
+    )
 }
