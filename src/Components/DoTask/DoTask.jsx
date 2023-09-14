@@ -3,9 +3,10 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { v4 as uuidv4 } from 'uuid';
-const DoTask = () => {
-    const [tasks, setTasks] = useState([]);
-    console.log(tasks);
+import toast, { Toaster } from 'react-hot-toast';
+import TaskPriority from '../TaskPriority/TaskPriority';
+
+const DoTask = ({tasks, setTasks}) => {
     const [task, setTask] = useState({
         id: "",
         name: "",
@@ -13,15 +14,14 @@ const DoTask = () => {
     })
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        if (task.name.length < 3) return toast.error("Must Have min 3 characters.")
         setTasks((prevState) => {
             const updatedTasks = [...prevState, task];
-            localStorage.setItem("task", JSON.stringify(updatedTasks));
-
+            localStorage.setItem("tasks", JSON.stringify(updatedTasks));
             return updatedTasks;
         });
+        toast.success('Successfully Assign tasks');
 
-        // Clear the input field after submitting
         setTask({
             id: "",
             name: "",
@@ -29,15 +29,12 @@ const DoTask = () => {
         });
     }
 
-    useEffect(() => {
-        const savedTasks = JSON.parse(localStorage.getItem("task"));
-        if (savedTasks) {
-            setTasks(savedTasks);
-        }
-    }, []);
-
     return (
         <div>
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
             <form
                 onSubmit={handleSubmit}>
                 <TextField id="outlined-basic"
@@ -49,13 +46,7 @@ const DoTask = () => {
                     type='submit'
                     variant="contained">Contained</Button>
             </form>
-            <ul>
-                <ul>
-                    {tasks.map((task) => (
-                        <li key={task.id}>{task.name}</li>
-                    ))}
-                </ul>
-            </ul>
+            <TaskPriority tasks={tasks} setTasks={setTasks}/>
         </div>
     )
 }
