@@ -6,6 +6,8 @@ import Box from '@mui/material/Box';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Button from '@mui/material/Button';
 import toast from 'react-hot-toast';
+import PopModal from '../Modal/PopModal';
+
 
 const TaskPriority = ({ tasks, setTasks }) => {
     const [todos, setTodos] = useState([]);
@@ -31,6 +33,7 @@ const TaskPriority = ({ tasks, setTasks }) => {
     }));
 
     return (
+        <>
         <Box mt={3}
             sx={{ width: '75%' }}
         >
@@ -45,6 +48,7 @@ const TaskPriority = ({ tasks, setTasks }) => {
 
             </Grid>
         </Box>
+        </>
     )
 }
 
@@ -95,6 +99,9 @@ const Header = ({ text, bg, count }) => {
 };
 
 const Task = ({ task, tasks, setTasks }) => {
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const handleDelete = (id) => {
         const shortTodo = tasks.filter(task => task?.id !== id);
@@ -111,8 +118,10 @@ const Task = ({ task, tasks, setTasks }) => {
         color: theme.palette.text.secondary,
     }));
     return (
-        <Box >
-            <Item sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
+        <Box>
+            <Item
+            onClick={handleOpen} 
+            sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
                 <h4>{task?.name}</h4>
                 <span>
                     <Button 
@@ -124,6 +133,11 @@ const Task = ({ task, tasks, setTasks }) => {
                     </Button>
                 </span>
             </Item>
+            <PopModal 
+            open={open} 
+            handleClose={handleClose} 
+            task={task} tasks={tasks} 
+            setTasks={setTasks}/>
         </Box>
     )
 };

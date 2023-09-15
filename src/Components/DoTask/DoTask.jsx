@@ -44,7 +44,7 @@ const DoTask = ({tasks, setTasks}) => {
                 onSubmit={handleSubmit}>
                 <TextField id="outlined-basic"
                     label="Outlined" variant="outlined"
-                    value={task.name}
+                    value={task?.name}
                     onChange={(e) => setTask({ ...task, id: uuidv4(), name: e.target.value })}
                 />
                 <Button
