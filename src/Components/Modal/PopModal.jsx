@@ -1,13 +1,22 @@
 import { useState } from 'react'
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import Select from '@mui/material/Select';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 
+
 const PopModal = ({ open, handleClose, task, tasks, setTasks }) => {
-  console.log(task);
-  const [editedTaskName, setEditedTaskName] = useState(task?.name || '');
+  const [editedTaskTitle, setEditedTaskTitle] = useState(task?.title || '');
+  const [description, setDescription] = useState(task?.description || '');
+
+  const today = new Date().toISOString().split('T')[0];
+  const [date, setDate] = useState(today);
+
+  const [priority, setPriority] = useState('medium'); // Change this to your desired default value
+
   const style = {
     position: 'absolute',
     top: '50%',
@@ -21,12 +30,27 @@ const PopModal = ({ open, handleClose, task, tasks, setTasks }) => {
   };
 
   const handleSave = () => {
+    // Create an updated task object with the edited values
+    const updatedTask = {
+      ...task,
+      title: editedTaskTitle,
+      description,
+      date,
+      priority,
+    };
 
+    // Update the task in the tasks array
     const updatedTasks = tasks.map((t) =>
-      t?.id === task?.id ? { ...t, name: editedTaskName } : t );
-    setTasks(updatedTasks);
+      t?.id === task?.id ? updatedTask : t
+    );
+
+    // Update local storage with the updated tasks
     localStorage.setItem('tasks', JSON.stringify(updatedTasks));
 
+    // Update the tasks state in the parent component
+    setTasks(updatedTasks);
+
+    // Close the modal
     handleClose();
   };
 
@@ -38,19 +62,52 @@ const PopModal = ({ open, handleClose, task, tasks, setTasks }) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <Box
+        component="form"
+        noValidate
+        autoComplete="off"
+        sx={style}
+        onSubmit={handleSave}
+      >
         <TextField
-          value={editedTaskName}
-          onChange={(e) => setEditedTaskName(e.target.value)}
+          value={editedTaskTitle}
+          onChange={(e) => setEditedTaskTitle(e.target.value)}
           id="outlined-basic"
-          label="Outlined" variant="outlined" />
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-        </Typography>
-        <Button
-        onClick={handleSave}
-        type='submit'
-        variant="contained">save</Button>
+          label="Title"
+          variant="outlined"
+        />
+        <TextField
+          sx={{ mt: 2 }}
+          fullWidth
+          id="outlined-multiline-flexible"
+          label="Description"
+          multiline
+          maxRows={4}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <TextField
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
+        <InputLabel id="demo-simple-select-label">Priority</InputLabel>
+        <Select
+          fullWidth
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={priority}
+          onChange={(e) => setPriority(e.target.value)}
+          label="priority"
+        >
+          <MenuItem value="low">low</MenuItem>
+          <MenuItem value="medium">Medium</MenuItem>
+          <MenuItem value="high">High</MenuItem>
+          <MenuItem value="now">Now!</MenuItem>
+        </Select>
+        <Button type="submit" variant="contained">
+          Save
+        </Button>
       </Box>
     </Modal>
   )

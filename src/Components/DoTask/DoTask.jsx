@@ -9,12 +9,12 @@ import TaskPriority from '../TaskPriority/TaskPriority';
 const DoTask = ({tasks, setTasks}) => {
     const [task, setTask] = useState({
         id: "",
-        name: "",
+        title: "",
         status: "todo"
     })
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (task.name.length < 3) return toast.error("Must Have min 3 characters.")
+        if (task.title.length < 3) return toast.error("Must Have min 3 characters.")
         setTasks((prevState) => {
             const updatedTasks = [...prevState, task];
             localStorage.setItem("tasks", JSON.stringify(updatedTasks));
@@ -24,7 +24,7 @@ const DoTask = ({tasks, setTasks}) => {
 
         setTask({
             id: "",
-            name: "",
+            title: "",
             status: "todo"
         });
     }
@@ -44,8 +44,8 @@ const DoTask = ({tasks, setTasks}) => {
                 onSubmit={handleSubmit}>
                 <TextField id="outlined-basic"
                     label="Outlined" variant="outlined"
-                    value={task?.name}
-                    onChange={(e) => setTask({ ...task, id: uuidv4(), name: e.target.value })}
+                    value={task?.title}
+                    onChange={(e) => setTask({ ...task, id: uuidv4(), title: e.target.value })}
                 />
                 <Button
                     type='submit'

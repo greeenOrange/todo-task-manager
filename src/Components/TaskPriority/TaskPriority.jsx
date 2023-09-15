@@ -122,7 +122,7 @@ const Task = ({ task, tasks, setTasks }) => {
             <Item
             onClick={handleOpen} 
             sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-                <h4>{task?.name}</h4>
+                <h4>{task?.title}</h4>
                 <span>
                     <Button 
                     variant="outlined" 
