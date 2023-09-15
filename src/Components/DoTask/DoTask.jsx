@@ -30,12 +30,17 @@ const DoTask = ({tasks, setTasks}) => {
     }
 
     return (
-        <div>
+        <Box
+        mt={3}
+        container
+        sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}
+        >
             <Toaster
                 position="top-center"
                 reverseOrder={false}
             />
             <form
+            style={{display: "flex", alignItems: "center", justifyContent: "center"}}
                 onSubmit={handleSubmit}>
                 <TextField id="outlined-basic"
                     label="Outlined" variant="outlined"
@@ -47,7 +52,7 @@ const DoTask = ({tasks, setTasks}) => {
                     variant="contained">Contained</Button>
             </form>
             <TaskPriority tasks={tasks} setTasks={setTasks}/>
-        </div>
+        </Box>
     )
 }
 
