@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import DoTask from './DoTask/DoTask'
-
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd'
 function App() {
   const [tasks, setTasks] = useState([]);
 
@@ -13,7 +14,9 @@ const savedTasks = JSON.parse(localStorage.getItem("tasks"));
 }, [])
   return (
     <>
+    <DndProvider backend={HTML5Backend}>
       <DoTask tasks={tasks} setTasks={setTasks}/>
+      </DndProvider>
     </>
   )
 }

@@ -10,6 +10,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import { useDrag, useDrop } from 'react-dnd';
 
 const TaskPriority = ({ tasks, setTasks, handleSubmit }) => {
     const [todos, setTodos] = useState([]);
@@ -57,6 +58,15 @@ const TaskPriority = ({ tasks, setTasks, handleSubmit }) => {
 export default TaskPriority;
 
 const Section = ({ status, setTasks, tasks, todos, inProgress, done, handleSubmit }) => {
+
+    const [{isOver}, drop] = useDrop(() =>({
+        accept: 'task',
+        drop: (item) => addItemToSection(item?.id),
+        collect: (monitor) => ({
+            isOver: !!monitor.isOver()
+        })
+    }))
+
     console.log(todos);
     let text = "todo";
     let bg = "bg-slate-500";
@@ -73,11 +83,38 @@ const Section = ({ status, setTasks, tasks, todos, inProgress, done, handleSubmi
         taskPriority = done
     }
 
+    const addItemToSection = (id) =>{
+        setTasks((prev) => {
+            const updatedTasks  = prev.map(t => {
+                if(t.id === id){
+                    return {...t, status: status}
+                }else{
+                    return t
+                }
+            })
+            if (JSON.stringify(prev) === JSON.stringify(updatedTasks)) {
+                toast.error('No status changed.');
+              } else {
+                localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+                toast.success('Successfully task status changed.');
+              }
+            return updatedTasks 
+        })
+    }
+
     return <>
-        <div>
+        <Box 
+        ref={drop}
+        sx={{
+            padding: 3,
+            ...(isOver ? { backgroundColor: 'red' } : {}),
+          }}
+        >
             <Header text={text} bg={bg} count={taskPriority?.length} handleSubmit={handleSubmit}/>
-            {taskPriority?.length > 0 && taskPriority?.map(task => <Task key={task?.id} task={task} tasks={tasks} setTasks={setTasks} />)}
-        </div>
+            {taskPriority?.length > 0 && taskPriority?.map(task => 
+            <Task key={task?.id} task={task} tasks={tasks} setTasks={setTasks} />
+            )}
+        </Box>
     </>
 }
 
@@ -93,7 +130,6 @@ const Header = ({ text, bg, count, handleSubmit }) => {
     return (
         <Box className={`${bg} flex`}>
             <Item
-    
             sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}
             >
             <h2>{text}
@@ -102,7 +138,9 @@ const Header = ({ text, bg, count, handleSubmit }) => {
             {text === 'todo' && (
           <Button 
           onClick={handleSubmit} 
-          startIcon={<AddOutlinedIcon />}>
+          startIcon={<AddOutlinedIcon 
+          sx={{fill: 'inherit'}}
+          />}>
           </Button>
         )}
             </Item>
@@ -116,12 +154,6 @@ const Task = ({ task, tasks, setTasks }) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const handleDelete = (id) => {
-        const shortTodo = tasks.filter(task => task?.id !== id);
-        localStorage.setItem('tasks', JSON.stringify(shortTodo));
-        setTasks(shortTodo);
-        toast.success('Successfully Delete!')
-    }
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         ...theme.typography.body2,
@@ -130,9 +162,26 @@ const Task = ({ task, tasks, setTasks }) => {
         alighItems: 'center',
         color: theme.palette.text.secondary,
     }));
+
+    const handleDelete = (id) => {
+        const shortTodo = tasks.filter(task => task?.id !== id);
+        localStorage.setItem('tasks', JSON.stringify(shortTodo));
+        setTasks(shortTodo);
+        toast.success('Successfully Delete!')
+    }
+    const [{isDragging}, drag] = useDrag(() =>({
+        type: 'task',
+        item: {id: task?.id},
+        collect: (monitor) => ({
+            isDragging: !!monitor.isDragging()
+        })
+    }))
+    console.log(isDragging);
+
     return (
         <Box>
             <Item
+            ref={drag}
             sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h4>{task?.title}</h4>
                 <Box>
