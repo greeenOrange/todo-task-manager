@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -12,22 +12,30 @@ const DoTask = ({tasks, setTasks}) => {
         title: "",
         status: "todo"
     })
+
+    const handleChange = (e) => {
+        setTask({ ...task, id: uuidv4(), title: e.target.value })
+    }
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (task.title.length < 3) return toast.error("Must Have min 3 characters.")
+        const shortCutTask = {
+          ...task,
+          id: uuidv4(),
+        };
+        
         setTasks((prevState) => {
-            const updatedTasks = [...prevState, task];
-            localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-            return updatedTasks;
+          const updatedTasks = [...prevState, shortCutTask];
+          localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+          return updatedTasks;
         });
-        toast.success('Successfully Assign tasks');
-
+        toast.success('Successfully assigned task.');
+    
         setTask({
-            id: "",
-            title: "",
-            status: "todo"
+          id: '',
+          title: '',
+          status: 'todo',
         });
-    }
+      };
 
     return (
         <Box
@@ -45,13 +53,13 @@ const DoTask = ({tasks, setTasks}) => {
                 <TextField id="outlined-basic"
                     label="Outlined" variant="outlined"
                     value={task?.title}
-                    onChange={(e) => setTask({ ...task, id: uuidv4(), title: e.target.value })}
+                    onChange={handleChange}
                 />
                 <Button
                     type='submit'
                     variant="contained">Contained</Button>
             </form>
-            <TaskPriority tasks={tasks} setTasks={setTasks}/>
+            <TaskPriority tasks={tasks} setTasks={setTasks} handleSubmit={handleSubmit}/>
         </Box>
     )
 }

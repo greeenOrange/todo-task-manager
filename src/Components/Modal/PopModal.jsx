@@ -7,15 +7,12 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 
-
 const PopModal = ({ open, handleClose, task, tasks, setTasks }) => {
   const [editedTaskTitle, setEditedTaskTitle] = useState(task?.title || '');
   const [description, setDescription] = useState(task?.description || '');
-
   const today = new Date().toISOString().split('T')[0];
   const [date, setDate] = useState(today);
-
-  const [priority, setPriority] = useState('medium'); // Change this to your desired default value
+  const [priority, setPriority] = useState('medium'); 
 
   const style = {
     position: 'absolute',
@@ -30,7 +27,6 @@ const PopModal = ({ open, handleClose, task, tasks, setTasks }) => {
   };
 
   const handleSave = () => {
-    // Create an updated task object with the edited values
     const updatedTask = {
       ...task,
       title: editedTaskTitle,
@@ -39,18 +35,14 @@ const PopModal = ({ open, handleClose, task, tasks, setTasks }) => {
       priority,
     };
 
-    // Update the task in the tasks array
     const updatedTasks = tasks.map((t) =>
       t?.id === task?.id ? updatedTask : t
     );
 
-    // Update local storage with the updated tasks
     localStorage.setItem('tasks', JSON.stringify(updatedTasks));
 
-    // Update the tasks state in the parent component
     setTasks(updatedTasks);
 
-    // Close the modal
     handleClose();
   };
 
