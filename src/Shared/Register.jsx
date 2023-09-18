@@ -17,7 +17,6 @@ const Register = () => {
     };
     localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('isLoggedIn', 'true');
-    console.log(`Registered with email: ${email} and password: ${password}`);
   };
 
   const handleImageChange = (e) => {

@@ -9,11 +9,11 @@ const Login = () => {
 
   const handleLogin = () => {
     const storedUser = localStorage.getItem('user');
-
+    console.log(storedUser);
     if (storedUser) {
       const user = JSON.parse(storedUser);
 
-      if (email === user.email && password === user.password) {
+      if (email === user?.email && password === user?.password) {
         localStorage.setItem('isLoggedIn', 'true');
         toast.success('Successfully task status changed.');
       } else {
