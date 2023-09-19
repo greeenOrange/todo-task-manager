@@ -9,11 +9,10 @@ const Profile = () => {
 
   const profileUser = JSON.parse(localStorage.getItem('user'));
 
-  console.log( profileUser.name );
   return (
     <div>
-        This is my Profile pro!
-        <img src={url} alt="" />
+        <img src={url} alt={url} width="100" height="100" />
+        This Profile is {profileUser?.name} !
     </div>
   )
 }

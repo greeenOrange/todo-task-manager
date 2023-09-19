@@ -9,9 +9,9 @@
 
 * User Authentication securely to access personalized task lists and manage tasks.
 * Assign priority levels to Task making it easy to focus on what matters matters most.
-* Created tasks can be easily edit or delete them to keep task list up to date.
+* Created tasks can be easily edited and deleted them to keep task list up to date.
 * Intuitively organize tasks by dragging and dropping them to reorder them.
-* Customize profile information and settings to make the app own.
+* Customize profile information and Edit image to make the app own.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
