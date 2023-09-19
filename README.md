@@ -1,8 +1,29 @@
-# React + Vite
+# task-manager Apps :airplane: [live site](https://todo-taskmanager-4a73e.netlify.app)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## drag and drop with priority list.
+:black_medium_square: [Live site](https://todo-taskmanager-4a73e.netlify.app)
+:black_medium_small_square: [client site](https://github.com/greeenOrange/todo-task-manager.git)
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### `Feature`
+
+* User Authentication securely to access personalized task lists and manage tasks.
+* Assign priority levels to Task making it easy to focus on what matters matters most.
+* Created tasks can be easily edit or delete them to keep task list up to date.
+* Intuitively organize tasks by dragging and dropping them to reorder them.
+* Customize profile information and settings to make the app own.
+
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
+
+### `Technology`
+
+* React
+* React-Router
+* MaterialUI
+* React Dnd
+* Local Storage
+
+### `Deploy`
+
+* Netlify
