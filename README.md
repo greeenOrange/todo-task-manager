@@ -1,8 +1,8 @@
 # task-manager Apps :airplane: [live site](https://todo-taskmanager-4a73e.netlify.app)
 
-## drag and drop with priority list.
+## Drag and Drop with reorder list.
 :black_medium_square: [Live site](https://todo-taskmanager-4a73e.netlify.app)
-:black_medium_small_square: [client site](https://github.com/greeenOrange/todo-task-manager.git)
+:black_medium_square: [client site](https://github.com/greeenOrange/todo-task-manager.git)
 
 
 ### `Feature`
