@@ -51,13 +51,13 @@ const DoTask = ({tasks, setTasks}) => {
             style={{display: "flex", alignItems: "center", justifyContent: "center"}}
                 onSubmit={handleSubmit}>
                 <TextField id="outlined-basic"
-                    label="Outlined" variant="outlined"
+                    label="title" variant="outlined"
                     value={task?.title}
                     onChange={handleChange}
                 />
                 <Button
                     type='submit'
-                    variant="contained">Contained</Button>
+                    variant="contained">ADD</Button>
             </form>
             <TaskPriority tasks={tasks} setTasks={setTasks} handleSubmit={handleSubmit}/>
         </Box>
