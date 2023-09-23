@@ -12,7 +12,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { Avatar } from '@mui/material';
+import { Avatar, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
@@ -57,9 +57,14 @@ const Search = styled('div')(({ theme }) => ({
   }));
 
 export default function PrimarySearchAppBar() {
-  const profileUser = JSON.parse(localStorage.getItem('user'));
   const [url, setUrl] =useState('');
-  
+
+  const handlelogOut = () => {
+    localStorage.removeItem('user');
+    localStorage.setItem('isLoggedIn', 'false');
+    setUrl(localStorage.removeItem('recent-image'));
+    window.location.reload();
+  }
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -108,7 +113,11 @@ export default function PrimarySearchAppBar() {
      <MenuItem onClick={handleMenuClose}> 
      <Link to="/profile">Profile</Link>
      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>Log out</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Button onClick={handlelogOut}>
+          log out
+        </Button>
+      </MenuItem>
     </Menu>
   );
 

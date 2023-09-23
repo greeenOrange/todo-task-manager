@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
   const [url, setUrl] =useState('');
@@ -11,8 +12,14 @@ const Profile = () => {
 
   return (
     <div>
-        <img src={url} alt={url} width="100" height="100" />
-        This Profile is {profileUser?.name} !
+        {url ?
+        <img src={url} alt={url} width="100" height="100" />:
+        <Link to="/login">login</Link>
+        }
+        {
+          profileUser && 
+          <p>This Profile is {profileUser?.name} !</p>
+        }
     </div>
   )
 }

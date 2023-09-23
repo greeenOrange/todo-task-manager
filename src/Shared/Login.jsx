@@ -1,20 +1,24 @@
 import { useState } from 'react';
 import { Button, Container, TextField, Typography, Grid } from '@mui/material';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const from = location.state?.from.pathname || '/'
 
   const handleLogin = () => {
     const storedUser = localStorage.getItem('user');
-    console.log(storedUser);
     if (storedUser) {
       const user = JSON.parse(storedUser);
 
       if (email === user?.email && password === user?.password) {
         localStorage.setItem('isLoggedIn', 'true');
+        setAuth({user})
+        navigate(from, { replace: true})
         toast.success('Successfully task status changed.');
       } else {
         setError('Invalid email or password');
