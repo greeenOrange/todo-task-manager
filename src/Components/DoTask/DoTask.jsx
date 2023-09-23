@@ -12,7 +12,7 @@ const DoTask = ({tasks, setTasks}) => {
         title: "",
         status: "todo"
     })
-    const theme = useTheme();
+    
     const handleChange = (e) => {
         setTask({ ...task, id: uuidv4(), title: e.target.value })
     }

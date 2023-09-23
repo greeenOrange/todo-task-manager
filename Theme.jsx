@@ -1,16 +1,15 @@
 import { createTheme } from '@mui/material/styles';
+import { green, orange } from '@mui/material/colors';
 
-export const createTheme = {
+const Theme = createTheme({
   palette: {
-    mode: 'light',
     primary: {
-      main: '#4735e9',
+      main: orange[500],
     },
     secondary: {
-      main: '#369dff',
-    },
-    success: {
-      main: '#007E00',
+      main: green[500],
     },
   },
-};
+});
+
+export default Theme
