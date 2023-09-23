@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
+import Card from '@mui/material/Paper';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import toast from 'react-hot-toast';
@@ -37,20 +41,20 @@ const TaskPriority = ({ tasks, setTasks, handleSubmit }) => {
 
     return (
         <>
-        <Box mt={3}
-            sx={{ width: '75%' }}
-        >
-            <Grid
-                container
-                spacing={2}>
-                {stateUses?.map((status, index) => (
-                    <Grid key={index} item xs={4}>
-                        <Section status={status} tasks={tasks} setTasks={setTasks} todos={todos} inProgress={inProgress} done={done} handleSubmit={handleSubmit}/>
-                    </Grid>
-                ))}
+            <Box mt={3}
+                sx={{ width: '75%' }}
+            >
+                <Grid
+                    container
+                    spacing={2}>
+                    {stateUses?.map((status, index) => (
+                        <Grid key={index} item xs={4}>
+                            <Section status={status} tasks={tasks} setTasks={setTasks} todos={todos} inProgress={inProgress} done={done} handleSubmit={handleSubmit} />
+                        </Grid>
+                    ))}
 
-            </Grid>
-        </Box>
+                </Grid>
+            </Box>
         </>
     )
 }
@@ -59,7 +63,7 @@ export default TaskPriority;
 
 const Section = ({ status, setTasks, tasks, todos, inProgress, done, handleSubmit }) => {
 
-    const [{isOver}, drop] = useDrop(() =>({
+    const [{ isOver }, drop] = useDrop(() => ({
         accept: 'task',
         drop: (item) => addItemToSection(item?.id),
         collect: (monitor) => ({
@@ -68,7 +72,7 @@ const Section = ({ status, setTasks, tasks, todos, inProgress, done, handleSubmi
     }))
 
     let text = "todo";
-    let bg = green[500];
+    let bg = red[500];
     let taskPriority = todos
 
     if (status === "inprogress") {
@@ -78,71 +82,76 @@ const Section = ({ status, setTasks, tasks, todos, inProgress, done, handleSubmi
     }
     if (status === "done") {
         text = "done";
-        bg = red[500];
+        bg = green[500];
         taskPriority = done
     }
 
-    const addItemToSection = (id) =>{
+    const addItemToSection = (id) => {
         setTasks((prev) => {
-            const updatedTasks  = prev.map(t => {
-                if(t.id === id){
-                    return {...t, status: status}
-                }else{
+            const updatedTasks = prev.map(t => {
+                if (t.id === id) {
+                    return { ...t, status: status }
+                } else {
                     return t
                 }
             })
             if (JSON.stringify(prev) === JSON.stringify(updatedTasks)) {
                 toast.error('No status changed.');
-              } else {
+            } else {
                 localStorage.setItem('tasks', JSON.stringify(updatedTasks));
                 toast.success('Successfully task status changed.');
-              }
-            return updatedTasks 
+            }
+            return updatedTasks
         })
     }
 
     return <>
-        <Box 
-        ref={drop}
-        sx={{
-            padding: 3,
-            ...(isOver ? { backgroundColor: grey[400] } : {}),
-          }}
+        <Box
+            ref={drop}
+            sx={{
+                padding: 3,
+                ...(isOver ? { backgroundColor: grey[400] } : {}),
+            }}
         >
-            <Header text={text} bg={bg} count={taskPriority?.length} handleSubmit={handleSubmit}/>
-            {taskPriority?.length > 0 && taskPriority?.map(task => 
-            <Task key={task?.id} task={task} tasks={tasks} setTasks={setTasks} />
+            <Header text={text} bg={bg} count={taskPriority?.length} handleSubmit={handleSubmit} />
+            {taskPriority?.length > 0 && taskPriority?.map(task =>
+                <Task key={task?.id} task={task} tasks={tasks} setTasks={setTasks} />
             )}
         </Box>
     </>
 }
 
 const Header = ({ text, bg, count, handleSubmit }) => {
-const color = red[500]
+
     const Item = styled(Paper)(({ theme }) => ({
+        backgroundColor: bg,
         ...theme.typography.body2,
         padding: theme.spacing(1),
         textAlign: 'center',
+        textTransform: 'uppercase',
         color: theme.palette.text.secondary,
     }));
     return (
-        <Box sx={{bg, backgroundColor: color}}>
+        <Box>
             <Item
-            sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}
+                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
             >
-            <h2>{text}
-                <span className="">{count}</span>
-            </h2>
-            {text === 'todo' && (
-          <Button 
-          onClick={handleSubmit} 
-          startIcon={<AddOutlinedIcon 
-          sx={{fill: 'inherit'}}
-          />}>
-          </Button>
-        )}
+                <Typography variant="h5" component="h5"
+                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >{text}
+                    <Typography sx={{ ml: '4px', p: '4px', backgroundColor: grey[300] }}
+                        variant="body1" component="body1">{count}</Typography >
+                </Typography>
+                {text === 'todo' && (
+                    <Button
+                        onClick={handleSubmit}
+                        startIcon={<AddOutlinedIcon
+                            sx={{ fill: 'inherit' }}
+                        />}>
+                    </Button>
+                )}
             </Item>
-            
+
         </Box>
     )
 };
@@ -166,9 +175,9 @@ const Task = ({ task, tasks, setTasks }) => {
         setTasks(shortTodo);
         toast.success('Successfully Delete!')
     }
-    const [{isDragging}, drag] = useDrag(() =>({
+    const [{ isDragging }, drag] = useDrag(() => ({
         type: 'task',
-        item: {id: task?.id},
+        item: { id: task?.id },
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging()
         })
@@ -176,35 +185,37 @@ const Task = ({ task, tasks, setTasks }) => {
 
     return (
         <Box>
-            <Item
-            ref={drag}
-            sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h4>{task?.title}</h4>
-                <Box>
-                    <Button
-                    sx={{minWidth: '28px', paddingX: '6px', paddingY: '10px'}} 
-                    variant="delete" 
-                    startIcon={<DeleteOutlinedIcon />} 
-                    onClick={() => handleDelete(task?.id)}
-                    />
-                    <Button
-                    sx={{minWidth: '28px', paddingX: '6px', paddingY: '10px'}} 
-                    variant="edit" 
-                    startIcon={<EditOutlinedIcon />} 
-                    onClick={handleOpen}
-                    />
-                    <Button
-                    sx={{minWidth: '28px', paddingX: '6px', paddingY: '10px', color: 'inherit'}} 
-                    onClick={handleOpen}  
-                    startIcon={<MoreVertIcon />}
-                    />
-                </Box>
-            </Item>
-            <PopModal 
-            open={open} 
-            handleClose={handleClose} 
-            task={task} tasks={tasks} 
-            setTasks={setTasks}/>
+            <Card
+                ref={drag}
+                sx={{ maxWidth: 345, mt: '8px' }}>
+                <CardHeader
+                    title={task?.title}
+                    subheader={task?.date}
+                    action={
+                        <>
+                            <MoreVertIcon
+                                onClick={handleOpen}
+                            />
+                            <DeleteOutlinedIcon
+                                onClick={() => handleDelete(task?.id)}
+                            />
+                        </>
+
+                    }
+                />
+                <CardContent>
+                    <Typography variant="body2" color="text.secondary">
+                        This impressive paella is a perfect party dish and a fun meal to cook
+                        together with your guests. Add 1 cup of frozen peas along with the mussels,
+                        if you like.
+                    </Typography>
+                </CardContent>
+            </Card>
+            <PopModal
+                open={open}
+                handleClose={handleClose}
+                task={task} tasks={tasks}
+                setTasks={setTasks} />
         </Box>
     )
 };
