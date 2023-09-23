@@ -189,7 +189,7 @@ const Task = ({ task, tasks, setTasks }) => {
                 ref={drag}
                 sx={{ maxWidth: 345, mt: '8px' }}>
                 <CardHeader
-                    title={task?.title}
+                    title={task?.title || "No Title"}
                     subheader={task?.date}
                     action={
                         <>
@@ -205,9 +205,7 @@ const Task = ({ task, tasks, setTasks }) => {
                 />
                 <CardContent>
                     <Typography variant="body2" color="text.secondary">
-                        This impressive paella is a perfect party dish and a fun meal to cook
-                        together with your guests. Add 1 cup of frozen peas along with the mussels,
-                        if you like.
+                        {task?.description}
                     </Typography>
                 </CardContent>
             </Card>
