@@ -1,37 +1,67 @@
-import React, { useEffect, useState } from 'react'
+import { useReducer, useState, } from 'react'
 import { Button, Container, TextField, Typography, Grid } from '@mui/material';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Box from '@mui/material/Box';
+import { reducer } from '../formAction/formAction';
+import { INPUT, TOGGLE } from '../actionHook/actionType';
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [image, setImage] = useState(null);
-  const [url, setUrl] =useState('');
+  const [imagePreview, setImagePreview] = useState("");
 
-  const handleRegister = () => {
-    const user = {
-      name: name,
-      email: email,
-      password: password,
-      image: image,
-    };
-    localStorage.setItem('user', JSON.stringify(user));
-    localStorage.setItem('isLoggedIn', 'true');
+  const initialState = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    image: null,
+    term: false,
   };
+
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.addEventListener('load', ()=>{
-      const imageDataUrl = localStorage.setItem('recent-image',reader.result);
-      setImage(imageDataUrl);
-  })
-    reader.readAsDataURL(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setImagePreview(reader.result);
+      });
+      reader.readAsDataURL(file)
+      dispatch({
+        type: INPUT,
+        payload: { name: "image", value: file },
+      });
+    }
   };
 
-  useEffect(() => {
-    setUrl(localStorage.getItem('recent-image'));
-}, [localStorage.getItem('recent-image')])
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!state.email.includes("@")) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    if (state.image) {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        localStorage.setItem("image", reader.result);
+
+        const userDataWithImage = {
+          ...state,
+          image: reader.result,
+        };
+        console.log("User Data with Image:", userDataWithImage);
+      });
+
+      reader.readAsDataURL(state.image);
+    }
+
+  };
+
+
 
   return (
     <Container maxWidth="xs">
@@ -39,55 +69,95 @@ const Register = () => {
         <Typography variant="h4" gutterBottom>
           Register
         </Typography>
-        <form>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                label="name"
+                label="first name"
                 fullWidth
                 variant="outlined"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                name="firstName"
+                onChange={(e) => dispatch({
+                  type: INPUT,
+                  payload: { name: e.target.name, value: e.target.value },
+                })}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
+                required
+                label="last name"
+                fullWidth
+                variant="outlined"
+                name="lastName"
+                onChange={(e) => dispatch({
+                  type: INPUT,
+                  payload: { name: e.target.name, value: e.target.value },
+                })}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
                 label="Email"
                 fullWidth
                 variant="outlined"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                onChange={(e) => dispatch({
+                  type: INPUT,
+                  payload: { name: e.target.name, value: e.target.value },
+                })}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
+                required
                 label="Password"
                 fullWidth
                 type="password"
                 variant="outlined"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                onChange={(e) => dispatch({
+                  type: INPUT,
+                  payload: { name: e.target.name, value: e.target.value },
+                })}
               />
+            </Grid>
+            <Grid item xs={12}>
+              {imagePreview && (
+                <img
+                  src={imagePreview}
+                  alt="Selected Image Preview"
+                  style={{ maxWidth: "100%", maxHeight: "200px" }}
+                />
+              )}
             </Grid>
             <Grid item xs={12}>
               <input
                 type="file"
                 accept="image/*"
+                name="image"
                 onChange={handleImageChange}
               />
             </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel required
+                onClick={() => dispatch({ type: TOGGLE })}
+                control={<Checkbox />} label="Agree to Terms and Conditions." />
+            </Grid>
           </Grid>
           <Button
-            sx={{ mt: 2 }}
+            sx={{ mt: 6 }}
             variant="contained"
             color="primary"
             fullWidth
-            onClick={handleRegister}
+            disabled={!state.term}
+            type="submit"
           >
             Register
           </Button>
-        </form>
-        <img src={url} alt="" />
+        </Box>
+        <img alt="" />
       </div>
     </Container>
   )
