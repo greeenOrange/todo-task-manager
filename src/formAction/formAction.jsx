@@ -1,5 +1,14 @@
 import { INPUT, TOGGLE } from "../actionHook/actionType";
 
+export const initialState = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    image: null,
+    term: false,
+  };
+
 export const reducer = (state, action) => {
     switch (action.type) {
         case INPUT:

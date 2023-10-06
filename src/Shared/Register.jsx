@@ -3,20 +3,12 @@ import { Button, Container, TextField, Typography, Grid } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
-import { reducer } from '../formAction/formAction';
+import { initialState, reducer } from '../formAction/formAction';
 import { INPUT, TOGGLE } from '../actionHook/actionType';
 
 const Register = () => {
   const [imagePreview, setImagePreview] = useState("");
 
-  const initialState = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    image: null,
-    term: false,
-  };
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
@@ -43,22 +35,19 @@ const Register = () => {
       alert("Please enter a valid email address.");
       return;
     }
-
     if (state.image) {
       const reader = new FileReader();
       reader.addEventListener("load", () => {
         localStorage.setItem("image", reader.result);
-
         const userDataWithImage = {
           ...state,
           image: reader.result,
         };
         console.log("User Data with Image:", userDataWithImage);
+        localStorage.setItem('user', JSON.stringify(userDataWithImage));
       });
-
       reader.readAsDataURL(state.image);
     }
-
   };
 
 
