@@ -8,8 +8,6 @@ import { INPUT, TOGGLE } from '../actionHook/actionType';
 
 const Register = () => {
   const [imagePreview, setImagePreview] = useState("");
-
-
   const [state, dispatch] = useReducer(reducer, initialState)
 
   const handleImageChange = (e) => {
@@ -17,20 +15,32 @@ const Register = () => {
     if (file) {
       const reader = new FileReader();
       reader.addEventListener("load", () => {
-        setImagePreview(reader.result);
+        const imageBase64 = reader.result;
+        setImagePreview(imageBase64);
+        dispatch({
+          type: INPUT,
+          payload: { name: "image", value: imageBase64 }, // Store the base64 image data
+        });
       });
-      reader.readAsDataURL(file)
-      dispatch({
-        type: INPUT,
-        payload: { name: "image", value: file },
-      });
+      reader.readAsDataURL(file);
     }
   };
-
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const newUser = {
+      firstName: state?.firstName,
+      lastName: state?.lastName,
+      email: state?.email,
+      password: state?.password,
+      image: state?.image,
+    };
+
+    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+    existingUsers.push(newUser);
+    localStorage.setItem('users', JSON.stringify(existingUsers));
+    
     if (!state.email.includes("@")) {
       alert("Please enter a valid email address.");
       return;
@@ -49,7 +59,6 @@ const Register = () => {
       reader.readAsDataURL(state.image);
     }
   };
-
 
 
   return (

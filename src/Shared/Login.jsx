@@ -7,26 +7,25 @@ import { initialState, reducer } from '../formAction/formAction';
 import { INPUT } from '../actionHook/actionType';
 
 const Login = () => {
-
   const navigate = useNavigate();
-  const from = location.state?.from.pathname || '/'
-
   const [state, dispatch] = useReducer(reducer, initialState);
 
- const handleSubmit = (e) => {
-  e.preventDefault();
-  const storedUser = JSON.parse(localStorage.getItem('user'));
-
-  if (state.email === storedUser?.email && state.password === storedUser?.password) {
-    state.email === storedUser?.email && state.password === storedUser?.password
-    toast.success('Successfully created!');
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const allUsers = JSON.parse(localStorage.getItem('users')) || [];
+    const user = allUsers.find(
+      (u) => u.email === state.email && u.password === state.password
+    );
+    console.log(user);
+    if (user) {
       navigate('/');
-  }
-  else {
-    toast.error('Invalid email or password.');
-  }
+      toast.success('Successfully logged in!');
+    } else {
+      alert('Login failed. Please check your email and password.');
+      toast.error('Login failed. Please check your email and password.');
+    }
 
-};
+  };
 
   return (
     <Container maxWidth="xs">
