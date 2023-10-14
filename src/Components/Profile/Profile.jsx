@@ -15,16 +15,7 @@ import Typography from '@mui/material/Typography';
 const Profile = () => {
   const [state] = useReducer(reducer, initialState);
 
-
   const allUsers = JSON.parse(localStorage.getItem('users')) || [];
-  console.log(allUsers);
-  // if (user) {
-  //   Navigate('/');
-  //   toast.success('Successfully logged in!');
-  // } else {
-  //   alert('Login failed. Please check your email and password.');
-  //   toast.error('Login failed. Please check your email and password.');
-  // }
 
   return (
     <Container maxWidth="sm">

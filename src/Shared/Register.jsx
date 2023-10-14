@@ -5,6 +5,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import { initialState, reducer } from '../formAction/formAction';
 import { INPUT, TOGGLE } from '../actionHook/actionType';
+import toast from 'react-hot-toast';
 
 const Register = () => {
   const [imagePreview, setImagePreview] = useState("");
@@ -40,12 +41,14 @@ const Register = () => {
     const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
     existingUsers.push(newUser);
     localStorage.setItem('users', JSON.stringify(existingUsers));
-    
     if (!state.email.includes("@")) {
       alert("Please enter a valid email address.");
       return;
     }
-    if (state.image) {
+    toast.success('Successfully Register in!');
+    alert("register successfully.");
+
+    if (state?.image) {
       const reader = new FileReader();
       reader.addEventListener("load", () => {
         localStorage.setItem("image", reader.result);
@@ -53,7 +56,6 @@ const Register = () => {
           ...state,
           image: reader.result,
         };
-        console.log("User Data with Image:", userDataWithImage);
         localStorage.setItem('user', JSON.stringify(userDataWithImage));
       });
       reader.readAsDataURL(state.image);
