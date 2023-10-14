@@ -16,16 +16,14 @@ const Login = () => {
     const user = allUsers.find(
       (u) => u.email === state.email && u.password === state.password
     );
-    console.log(user);
+
     if (user) {
       navigate('/');
       toast.success('Successfully logged in!');
     } else {
       alert('Login failed. Please check your email and password.');
       toast.error('Login failed. Please check your email and password.');
-    }
-
-  };
+    }};
 
   return (
     <Container maxWidth="xs">
