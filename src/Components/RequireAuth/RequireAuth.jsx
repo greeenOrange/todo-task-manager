@@ -5,7 +5,7 @@ const RequireAuth = () => {
   const location = useLocation();
 
   const isAuthenticated = authenticateUser(profileUser);
-  console.log(isAuthenticated);
+  // console.log(isAuthenticated);
   return isAuthenticated ? (
     <Outlet />
   ) : (

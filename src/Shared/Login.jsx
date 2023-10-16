@@ -2,7 +2,7 @@ import { useReducer } from 'react';
 import { Button, Container, TextField, Typography, Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { initialState, reducer } from '../formAction/formAction';
 import { INPUT } from '../actionHook/actionType';
 
@@ -75,8 +75,14 @@ const Login = () => {
             Login
           </Button>
 
-          <Typography variant="body2" color="error">
-            ERROR
+          <Typography variant="body2"
+          sx={{ mt: 1 }}
+          >
+            New user ? <Link
+            color="error" 
+            to="/register">
+            register
+            </Link>
           </Typography>
 
         </Box>

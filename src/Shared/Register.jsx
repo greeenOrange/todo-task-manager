@@ -6,10 +6,12 @@ import Box from '@mui/material/Box';
 import { initialState, reducer } from '../formAction/formAction';
 import { INPUT, TOGGLE } from '../actionHook/actionType';
 import toast from 'react-hot-toast';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 
 const Register = () => {
   const [imagePreview, setImagePreview] = useState("");
   const [state, dispatch] = useReducer(reducer, initialState)
+  const location = useLocation();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -47,6 +49,7 @@ const Register = () => {
     }
     toast.success('Successfully Register in!');
     alert("register successfully.");
+    <Navigate to="/login" state={{ from: location }} replace />
 
     if (state?.image) {
       const reader = new FileReader();
@@ -147,7 +150,7 @@ const Register = () => {
             </Grid>
           </Grid>
           <Button
-            sx={{ mt: 6 }}
+            sx={{ mt: 3 }}
             variant="contained"
             color="primary"
             fullWidth
@@ -156,6 +159,13 @@ const Register = () => {
           >
             Register
           </Button>
+          <Typography
+          sx={{ mt: 1 }}
+          >
+            Already register? <Link to="/login">
+            login
+            </Link>
+          </Typography>
         </Box>
         <img alt="" />
       </div>
