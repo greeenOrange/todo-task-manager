@@ -135,7 +135,10 @@ const Register = () => {
                 />
               )}
             </Grid>
-            <Grid item xs={12}>
+            <Grid 
+            item 
+            xs={12}
+            >
               <input
                 type="file"
                 accept="image/*"
@@ -143,7 +146,8 @@ const Register = () => {
                 onChange={handleImageChange}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item 
+            xs={12}>
               <FormControlLabel required
                 onClick={() => dispatch({ type: TOGGLE })}
                 control={<Checkbox />} label="Agree to Terms and Conditions." />
